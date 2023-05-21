@@ -1,0 +1,36 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.card-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 14px;
+}
+
+.icon {
+    text-align: right;
+    margin-top: 10px;
+    color: #999;
+    font-size: 24px;
+}
+
+.fa-dog {
+    color: brown;
+}
+
+.fa-cat {
+    color: gray;
+}
