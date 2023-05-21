@@ -1,23 +1,41 @@
 <?php
+trait Discountable {
+    public function applyDiscount($percentage) {
+        $discount = $this->price * ($percentage / 100);
+        $this->price -= $discount;
+    }
+}
+
+class InvalidCategoryException extends Exception {
+    public function __construct($message, $code = 0, Exception $previous = null) {
+        parent::__construct($message, $code, $previous);
+    }
+
+    public function __toString() {
+        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+    }
+}
+
 class Product {
+    use Discountable;
+
     public $id;
     public $title;
     public $price;
-    public $image;
     public $category;
     public $type;
 
-    public function __construct($id, $title, $price, $image, $category, $type) {
+    public function __construct($id, $title, $price, $category, $type) {
         $this->id = $id;
         $this->title = $title;
         $this->price = $price;
-        $this->image = $image;
         $this->category = $category;
         $this->type = $type;
     }
+
     public function generateCard() {
-        $categoryIcon = '<i class="fa-solid' . $this->category->icon . '"></i>';
-    
+        $categoryIcon = '<i class="fas ' . $this->category->icon . '"></i>';
+
         $card = '<div class="card">';
         $card .= '<div class="card-body">';
         $card .= '<h5 class="card-title">' . $this->title . '</h5>';
@@ -29,7 +47,7 @@ class Product {
         $card .= '<div class="icon">' . $categoryIcon . '</div>';
         $card .= '</div>';
         $card .= '</div>';
-    
+
         return $card;
     }
 }
@@ -63,15 +81,11 @@ class Shop {
         $this->categories[] = $category;
     }
 
-    public function getProductsByCategory($categoryName) {
-        $productsByCategory = [];
-
+    public function generateProductCards() {
+        $cards = '';
         foreach ($this->products as $product) {
-            if ($product->category->name === $categoryName) {
-                $productsByCategory[] = $product;
-            }
+            $cards .= $product->generateCard();
         }
-
-        return $productsByCategory;
+        return $cards;
     }
 }
